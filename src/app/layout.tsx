@@ -1,4 +1,3 @@
-"use server"
 import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import "./globals.css"
@@ -14,6 +13,8 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 })
+
+export const dynamic = "force-dynamic"
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
