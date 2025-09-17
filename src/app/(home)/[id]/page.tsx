@@ -17,7 +17,6 @@ export default function EditNodePage() {
   useEffect(() => {
     if (params.id && treeData.length > 0) {
       const foundTreeNode = TreeNodeOperations.findNodeById(treeData, params.id as string)
-      console.log(foundTreeNode)
       setNode(foundTreeNode)
       setLoading(false)
     }

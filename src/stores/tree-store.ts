@@ -2,7 +2,7 @@ import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import type { TreeNodeEntity } from "@/domain/entities/tree-node"
 import { TreeNodeOperations } from "@/domain/services/tree-node-operations"
-import { createTreeManagementUseCase } from "@/factories/tree-factory"
+import { mockTreeData } from "@/mock/mockData"
 
 interface TreeStore {
   treeData: TreeNodeEntity[]
@@ -17,10 +17,14 @@ interface TreeStore {
   setSearchTerm: (term: string) => void
   toggleSection: (section: keyof TreeStore["expandedSections"]) => void
 
-  addNode: (node: TreeNodeEntity) => Promise<void>
-  updateNode: (nodeId: string, updates: Partial<TreeNodeEntity["node"]>) => Promise<void>
-  deleteNode: (nodeId: string) => Promise<void>
-  handleDragAndDrop: (activeId: string, overId: string) => Promise<void>
+  // Repository methods migrated to store
+  getAllNodes: () => TreeNodeEntity[]
+  saveNodes: (nodes: TreeNodeEntity[]) => void
+  findNodeById: (nodeId: string) => TreeNodeEntity | null
+  addNode: (node: TreeNodeEntity) => void
+  updateNode: (nodeId: string, updates: Partial<TreeNodeEntity["node"]>) => void
+  deleteNode: (nodeId: string) => void
+  handleDragAndDrop: (activeId: string, overId: string) => void
 
   getFilteredTree: () => TreeNodeEntity[]
 }
@@ -28,11 +32,9 @@ interface TreeStore {
 export const useTreeStore = create(
   persist<TreeStore, [], []>(
     (set, get) => {
-      const treeManagementUseCase = createTreeManagementUseCase()
-
       return {
-        // Initial state
-        treeData: [],
+        // Initial state - initialize with mockData
+        treeData: mockTreeData,
         searchTerm: "",
         expandedSections: {
           localModels: true,
@@ -50,47 +52,46 @@ export const useTreeStore = create(
             },
           })),
 
-        addNode: async node => {
-          try {
-            await treeManagementUseCase.addNode(node)
-            const updatedData = await treeManagementUseCase.getFilteredTree("")
-            set({ treeData: updatedData })
-          } catch (error) {
-            console.error("Failed to add node:", error)
-            throw error
-          }
+        // Repository methods migrated from InMemoryTreeRepository
+        getAllNodes: () => {
+          const { treeData } = get()
+          return [...treeData]
         },
 
-        updateNode: async (nodeId, updates) => {
-          try {
-            await treeManagementUseCase.updateNode(nodeId, updates)
-            const updatedData = await treeManagementUseCase.getFilteredTree("")
-            set({ treeData: updatedData })
-          } catch (error) {
-            console.error("Failed to update node:", error)
-            throw error
-          }
+        saveNodes: (nodes) => {
+          set({ treeData: [...nodes] })
         },
 
-        deleteNode: async nodeId => {
-          try {
-            await treeManagementUseCase.deleteNode(nodeId)
-            const updatedData = await treeManagementUseCase.getFilteredTree("")
-            set({ treeData: updatedData })
-          } catch (error) {
-            console.error("Failed to delete node:", error)
-            throw error
-          }
+        findNodeById: (nodeId) => {
+          const { treeData } = get()
+          return TreeNodeOperations.findNodeById(treeData, nodeId)
         },
 
-        handleDragAndDrop: async (activeId, overId) => {
-          try {
-            const { treeData } = get()
-            const updatedNodes = await treeManagementUseCase.handleDragAndDrop(activeId, overId, treeData)
+        addNode: (node) => {
+          const { treeData } = get()
+          const updatedData = [...treeData, node]
+          set({ treeData: updatedData })
+        },
+
+        updateNode: (nodeId, updates) => {
+          const { treeData } = get()
+          const updatedData = TreeNodeOperations.updateNode(treeData, nodeId, updates)
+          set({ treeData: updatedData })
+        },
+
+        deleteNode: (nodeId) => {
+          const { treeData } = get()
+          const updatedData = TreeNodeOperations.deleteNode(treeData, nodeId)
+          set({ treeData: updatedData })
+        },
+
+        handleDragAndDrop: (activeId, overId) => {
+          const { treeData } = get()
+          // Simple drag and drop implementation - move node after target
+          const { newTree: tempTree, removedNode } = TreeNodeOperations.removeNode(treeData, activeId)
+          if (removedNode) {
+            const updatedNodes = TreeNodeOperations.insertNode(tempTree, removedNode, overId, "after")
             set({ treeData: updatedNodes })
-          } catch (error) {
-            console.error("Failed to handle drag and drop:", error)
-            throw error
           }
         },
 

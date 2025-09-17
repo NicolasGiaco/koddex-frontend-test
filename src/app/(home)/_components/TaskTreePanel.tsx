@@ -99,7 +99,7 @@ export default function TaskTreePanel({ data }: { data: TreeNodeEntity[] }) {
   }
 
   return (
-    <div className="w-96 h-screen  flex flex-col">
+    <div className="w-96 flex flex-col">
       {/* Header */}
       <div className="px-4 py-3 border-b border-gray-200">
         <div className="flex items-center justify-between mb-3">

@@ -26,10 +26,8 @@ export class CsvFileRepository {
       headers,
     })
     const text = await content.text()
-    console.log(text)
     const csvData = this.csvParser.parse(text)
 
-    console.log(csvData)
     return csvData.rows
   }
 }
