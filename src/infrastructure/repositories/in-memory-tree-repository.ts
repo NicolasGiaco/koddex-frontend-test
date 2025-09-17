@@ -1,8 +1,8 @@
-import { mockTreeData } from "@/data/mockData"
 import type { NodeEntity } from "@/domain/entities/node"
 import type { TreeNodeEntity } from "@/domain/entities/tree-node"
 import type { TreeRepository } from "@/domain/repositories/tree-repository"
 import { TreeNodeOperations } from "@/domain/services/tree-node-operations"
+import { mockTreeData } from "@/mock/mockData"
 
 export class InMemoryTreeRepository implements TreeRepository {
   private nodes: TreeNodeEntity[] = mockTreeData
