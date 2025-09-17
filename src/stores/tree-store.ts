@@ -58,16 +58,16 @@ export const useTreeStore = create(
           return [...treeData]
         },
 
-        saveNodes: (nodes) => {
+        saveNodes: nodes => {
           set({ treeData: [...nodes] })
         },
 
-        findNodeById: (nodeId) => {
+        findNodeById: nodeId => {
           const { treeData } = get()
           return TreeNodeOperations.findNodeById(treeData, nodeId)
         },
 
-        addNode: (node) => {
+        addNode: node => {
           const { treeData } = get()
           const updatedData = [...treeData, node]
           set({ treeData: updatedData })
@@ -79,7 +79,7 @@ export const useTreeStore = create(
           set({ treeData: updatedData })
         },
 
-        deleteNode: (nodeId) => {
+        deleteNode: nodeId => {
           const { treeData } = get()
           const updatedData = TreeNodeOperations.deleteNode(treeData, nodeId)
           set({ treeData: updatedData })
