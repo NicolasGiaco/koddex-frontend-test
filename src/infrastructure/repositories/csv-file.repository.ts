@@ -19,7 +19,7 @@ export class CsvFileRepository {
     }
 
     if (process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
-      headers["X-Vercel-Secret"] = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+      headers["x-vercel-protection-bypass"] = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
     }
 
     const content = await fetch(URL, {
