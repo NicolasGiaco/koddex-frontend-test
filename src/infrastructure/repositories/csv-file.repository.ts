@@ -13,7 +13,18 @@ export class CsvFileRepository {
     const URL = isProduction
       ? `https://${process.env.VERCEL_URL}/data/${fileName}`
       : `http://localhost:3000/data/${fileName}`
-    const content = await fetch(URL)
+    const headers: HeadersInit = {
+      "Content-Type": "text/csv",
+      Accept: "text/csv",
+    }
+
+    if (process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
+      headers["X-Vercel-Secret"] = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+    }
+
+    const content = await fetch(URL, {
+      headers,
+    })
     const text = await content.text()
     console.log(text)
     const csvData = this.csvParser.parse(text)
