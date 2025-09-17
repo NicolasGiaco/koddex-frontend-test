@@ -9,8 +9,16 @@ export class CsvFileRepository {
   ) {}
 
   async readCsvFile(fileName: string): Promise<CsvRow[]> {
-    const content = await this.fileRepository.readFile(fileName)
-    const csvData = this.csvParser.parse(content)
+    const isProduction = process.env.NODE_ENV === "production"
+    const URL = isProduction
+      ? `https://${process.env.VERCEL_URL}/data/${fileName}`
+      : `http://localhost:3000/data/${fileName}`
+    const content = await fetch(URL)
+    const text = await content.text()
+    console.log(text)
+    const csvData = this.csvParser.parse(text)
+
+    console.log(csvData)
     return csvData.rows
   }
 }

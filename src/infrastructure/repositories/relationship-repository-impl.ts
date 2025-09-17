@@ -7,7 +7,7 @@ import { CsvFileRepository } from "./csv-file.repository"
 export class RelationshipRepositoryImpl implements RelationshipRepository {
   constructor(
     private readonly csvRepository = new CsvFileRepository(),
-    private readonly fileName = "/src/data/relationships.csv",
+    private readonly fileName = "relationships.csv",
   ) {}
 
   async findAll(): Promise<Relationship[]> {

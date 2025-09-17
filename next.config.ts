@@ -19,12 +19,12 @@ const nextConfig: NextConfig = {
   // Compiler optimizations
   compiler: {
     // Remove console.log in production for smaller bundle
-    removeConsole:
-      process.env.NODE_ENV === "production"
-        ? {
-            exclude: ["error", "warn"],
-          }
-        : false,
+    // removeConsole:
+    //   process.env.NODE_ENV === "production"
+    //     ? {
+    //         exclude: ["error", "warn"],
+    //       }
+    //     : false,
   },
 
   // Images optimization for green web

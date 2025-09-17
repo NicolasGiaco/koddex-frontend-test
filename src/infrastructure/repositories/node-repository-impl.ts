@@ -10,7 +10,7 @@ import { CsvFileRepository } from "./csv-file.repository"
 export class NodeRepositoryImpl implements NodeRepository {
   constructor(
     private readonly csvRepository = new CsvFileRepository(),
-    private readonly fileName = "/src/data/nodes.csv",
+    private readonly fileName = "nodes.csv",
   ) {}
 
   async findById(id: string): Promise<NodeEntity | null> {
