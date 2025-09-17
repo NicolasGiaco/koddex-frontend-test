@@ -1,0 +1,59 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+
+  "files": {
+    "ignoreUnknown": true,
+    "includes": ["**", "!node_modules", "!.next", "!dist", "!build", "!src/app/globals.css"]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120,
+    "attributePosition": "auto"
+  },
+  "javascript": {
+    "jsxRuntime": "reactClassic",
+    "formatter": {
+      "enabled": true,
+      "semicolons": "asNeeded",
+      "quoteStyle": "double",
+      "indentStyle": "space",
+      "lineWidth": 120,
+      "lineEnding": "lf",
+      "bracketSpacing": true,
+      "jsxQuoteStyle": "double",
+      "arrowParentheses": "asNeeded",
+      "indentWidth": 2
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    },
+    "domains": {
+      "next": "recommended",
+      "react": "recommended"
+    }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
+}
