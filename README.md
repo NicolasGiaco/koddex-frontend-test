@@ -2,10 +2,6 @@
 
 > 🎯 **Application de visualisation d'arbre de tâches**
 
-## 📸 Aperçu
-
-Une interface moderne qui transforme des données CSV en arbre interactif pour organiser Features, User Stories et Tasks avec du drag & drop et de l'édition temps réel.
-
 ## 🚀 Démarrage Rapide
 
 ```bash
@@ -50,10 +46,11 @@ src/
 ├── domain/             # Logique métier
 ├── stores/             # État global
 └── lib/                # Utilitaires
+└── infrastructure/     
 ```
 
 ## Ce qui pourrait être amélioré
-
+- Fix le bug du reload de l'arbre
 - Virtualisation pour les gros datasets avec react-window ou @tanstack/react-virtual
 - Debouncing pour la recherche instantanée
 - Implémentation d'un backend
