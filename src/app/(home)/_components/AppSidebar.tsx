@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarHeader } from "@/components/ui/sidebar"
 import TaskTreePanel from "./TaskTreePanel"
 
 export async function AppSidebar() {
-  const response = await fetch(`${process.env.VERCEL_URL}/data`, {
+  const response = await fetch(`https://"${process.env.VERCEL_URL}/data`, {
     cache: "force-cache",
     next: { revalidate: 3600 },
   }).then(res => res.json())
