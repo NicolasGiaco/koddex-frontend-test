@@ -9,7 +9,7 @@ export async function GET() {
 
     return NextResponse.json({ data: tree })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return NextResponse.json({ error: "An error occurred" }, { status: 500 })
   }
 }
