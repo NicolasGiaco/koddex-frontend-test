@@ -1,6 +1,5 @@
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
-import { mockTreeData } from "@/data/mockData"
 import type { TreeNodeEntity } from "@/domain/entities/tree-node"
 import { TreeNodeOperations } from "@/domain/services/tree-node-operations"
 import { createTreeManagementUseCase } from "@/factories/tree-factory"
@@ -33,7 +32,7 @@ export const useTreeStore = create(
 
       return {
         // Initial state
-        treeData: mockTreeData,
+        treeData: [],
         searchTerm: "",
         expandedSections: {
           localModels: true,

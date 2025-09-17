@@ -19,7 +19,7 @@ import { useTreeStore } from "@/stores/tree-store"
 import { TreeNodeOperations } from "../../../domain/services/tree-node-operations"
 import { TreeNodeComponent } from "./TreeNode"
 
-export default function TaskTreePanel() {
+export default function TaskTreePanel({ data }: { data: TreeNodeEntity[] }) {
   const [activeId, setActiveId] = useState<string | null>(null)
 
   const {
@@ -28,11 +28,17 @@ export default function TaskTreePanel() {
     expandedSections,
     setSearchTerm,
     toggleSection,
-    addNode,
     updateNode,
     deleteNode,
     handleDragAndDrop,
+    setTreeData,
   } = useTreeStore()
+
+  React.useEffect(() => {
+    if (data && data.length > 0) {
+      setTreeData(data)
+    }
+  }, [])
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -121,7 +127,11 @@ export default function TaskTreePanel() {
         {/* Projects section */}
         <div className="flex-1">
           <div className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition-colors">
-            <Button onClick={() => toggleSection("projects")} className="flex items-center gap-2 flex-1">
+            <Button
+              onClick={() => toggleSection("projects")}
+              className="flex items-center gap-2 flex-1"
+              variant={"ghost"}
+            >
               <ChevronRight
                 className={`w-3.5 h-3.5 text-gray-500 transition-transform ${expandedSections.projects ? "rotate-90" : ""}`}
               />

@@ -88,10 +88,10 @@ export const TreeNodeComponent: React.FC<TreeNodeComponentProps> = ({
   return (
     <div ref={setNodeRef} style={style} className="">
       <div
-        className={`group/item flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-md cursor-pointer transition-colors ${isDragging ? "bg-gray-100" : ""}`}
+        className={`group/item flex items-center  gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-md cursor-pointer transition-colors ${isDragging ? "bg-gray-100" : ""}`}
         style={{ paddingLeft: `${level * 24 + 8}px` }}
       >
-        <div className="flex items-center gap-1.5 flex-1" {...attributes} {...listeners}>
+        <div className="flex items-center gap-1.5 flex-1 " {...attributes} {...listeners}>
           {hasChildren && (
             <Button
               onClick={e => {
@@ -99,6 +99,7 @@ export const TreeNodeComponent: React.FC<TreeNodeComponentProps> = ({
                 setIsExpanded(!isExpanded)
               }}
               className="p-0.5 hover:bg-gray-200 rounded transition-colors"
+              variant="ghost"
             >
               {isExpanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
             </Button>
@@ -126,7 +127,7 @@ export const TreeNodeComponent: React.FC<TreeNodeComponentProps> = ({
               onClick={e => e.stopPropagation()}
             />
           ) : (
-            <span className="flex-1 text-sm dark:text-white text-gray-900 font-medium select-none">
+            <span className="flex-1 text-sm dark:text-white dark:group-hover/item:text-gray-900 text-gray-900 font-medium select-none">
               {treeNode.node.name}
             </span>
           )}
@@ -135,8 +136,12 @@ export const TreeNodeComponent: React.FC<TreeNodeComponentProps> = ({
         </div>
 
         <div className="opacity-0 group-hover/item:opacity-100 flex gap-0.5 transition-opacity">
-          <Link href={`/${treeNode.node.id}`}>
-            <Button className="p-1 hover:bg-gray-200 rounded transition-colors" onClick={e => e.stopPropagation()}>
+          <Link href={`/${treeNode.node.id}`} replace>
+            <Button
+              className="p-1 hover:bg-gray-200 rounded transition-colors"
+              onClick={e => e.stopPropagation()}
+              variant="ghost"
+            >
               <Edit className="w-3.5 h-3.5 text-gray-500" />
             </Button>
           </Link>
@@ -148,6 +153,7 @@ export const TreeNodeComponent: React.FC<TreeNodeComponentProps> = ({
                 onNodeDelete(treeNode.node.id)
               }
             }}
+            variant="ghost"
           >
             <Trash2 className="w-3.5 h-3.5 text-gray-500" />
           </Button>

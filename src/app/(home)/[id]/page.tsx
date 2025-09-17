@@ -6,6 +6,7 @@ import { NodeForm } from "@/components/forms/NodeForm"
 import type { TreeNodeEntity } from "@/domain/entities/tree-node"
 import { TreeNodeOperations } from "@/domain/services/tree-node-operations"
 import { useTreeStore } from "@/stores/tree-store"
+import { LoadingSpinner } from "../../../components/ui/loading"
 
 export default function EditNodePage() {
   const params = useParams()
@@ -13,8 +14,6 @@ export default function EditNodePage() {
   const [node, setNode] = useState<TreeNodeEntity | null>(null)
   const [loading, setLoading] = useState(true)
 
-  console.log(treeData)
-  console.log(node)
   useEffect(() => {
     if (params.id && treeData.length > 0) {
       const foundTreeNode = TreeNodeOperations.findNodeById(treeData, params.id as string)
@@ -27,7 +26,7 @@ export default function EditNodePage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="text-lg">Loading...</div>
+        <LoadingSpinner />
       </div>
     )
   }

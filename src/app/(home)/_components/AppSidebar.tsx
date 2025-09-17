@@ -1,8 +1,15 @@
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader } from "@/components/ui/sidebar"
-import { ThemeToggle } from "../../../components/theme/theme-toggle"
+"use server"
+
+import { ThemeToggle } from "@/components/theme/theme-toggle"
+import { Sidebar, SidebarContent, SidebarHeader } from "@/components/ui/sidebar"
 import TaskTreePanel from "./TaskTreePanel"
 
-export function AppSidebar() {
+export async function AppSidebar() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/data`, {
+    cache: "force-cache",
+    next: { revalidate: 3600 },
+  }).then(res => res.json())
+
   return (
     <Sidebar>
       <SidebarHeader className="flex items-center justify-between flex-row">
@@ -10,7 +17,7 @@ export function AppSidebar() {
         <ThemeToggle />
       </SidebarHeader>
       <SidebarContent>
-        <TaskTreePanel />
+        <TaskTreePanel data={response.data} />
       </SidebarContent>
     </Sidebar>
   )

@@ -1,9 +1,9 @@
 "use server"
 import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "@/components/theme/theme-provider"
-import "../globals.css"
-import { SidebarProvider } from "../../components/ui/sidebar"
-import { AppSidebar } from "./_components/AppSidebar"
+import "./globals.css"
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "./(home)/_components/AppSidebar"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
