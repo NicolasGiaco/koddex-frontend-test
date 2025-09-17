@@ -12,7 +12,7 @@ import type { TreeNodeEntity } from "@/domain/entities/tree-node"
 interface TreeNodeComponentProps {
   treeNode: TreeNodeEntity
   level?: number
-  onNodeUpdate: (nodeId: string, updates: Partial<TreeNodeEntity['node']>) => void
+  onNodeUpdate: (nodeId: string, updates: Partial<TreeNodeEntity["node"]>) => void
   onNodeDelete: (nodeId: string) => void
 }
 
@@ -86,9 +86,9 @@ export const TreeNodeComponent: React.FC<TreeNodeComponentProps> = ({
   }
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} className="">
       <div
-        className={`group flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-md cursor-pointer transition-colors ${isDragging ? "bg-gray-100" : ""}`}
+        className={`group/item flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-md cursor-pointer transition-colors ${isDragging ? "bg-gray-100" : ""}`}
         style={{ paddingLeft: `${level * 24 + 8}px` }}
       >
         <div className="flex items-center gap-1.5 flex-1" {...attributes} {...listeners}>
@@ -134,12 +134,9 @@ export const TreeNodeComponent: React.FC<TreeNodeComponentProps> = ({
           {getStatusBadge()}
         </div>
 
-        <div className="opacity-0 group-hover:opacity-100 flex gap-0.5 transition-opacity">
+        <div className="opacity-0 group-hover/item:opacity-100 flex gap-0.5 transition-opacity">
           <Link href={`/${treeNode.node.id}`}>
-            <Button
-              className="p-1 hover:bg-gray-200 rounded transition-colors"
-              onClick={e => e.stopPropagation()}
-            >
+            <Button className="p-1 hover:bg-gray-200 rounded transition-colors" onClick={e => e.stopPropagation()}>
               <Edit className="w-3.5 h-3.5 text-gray-500" />
             </Button>
           </Link>

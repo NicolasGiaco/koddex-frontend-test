@@ -101,7 +101,7 @@ export function NodeForm({ treeNode, isEditing = false }: NodeFormProps) {
   }
 
   return (
-    <Card className="w-full max-w-3xl h-fit my-24">
+    <Card className="w-full max-w-3xl h-fit my-auto mx-4">
       <CardHeader>
         <CardTitle>
           {isEditing ? "Edit" : "Add a new"}{" "}

@@ -16,8 +16,6 @@ import React, { useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import type { TreeNodeEntity } from "@/domain/entities/tree-node"
 import { useTreeStore } from "@/stores/tree-store"
-import { NodeStatus } from "../../../domain/entities/node-status"
-import { NodeType } from "../../../domain/entities/node-type"
 import { TreeNodeOperations } from "../../../domain/services/tree-node-operations"
 import { TreeNodeComponent } from "./TreeNode"
 
@@ -78,7 +76,7 @@ export default function TaskTreePanel() {
     setActiveId(null)
   }
 
-  const handleNodeUpdate = async (nodeId: string, updates: Partial<TreeNodeEntity['node']>) => {
+  const handleNodeUpdate = async (nodeId: string, updates: Partial<TreeNodeEntity["node"]>) => {
     try {
       await updateNode(nodeId, updates)
     } catch (error) {
@@ -95,7 +93,7 @@ export default function TaskTreePanel() {
   }
 
   return (
-    <div className="w-96 h-screen bg-white border-r border-gray-200 flex flex-col dark:bg-slate-700">
+    <div className="w-96 h-screen  flex flex-col">
       {/* Header */}
       <div className="px-4 py-3 border-b border-gray-200">
         <div className="flex items-center justify-between mb-3">

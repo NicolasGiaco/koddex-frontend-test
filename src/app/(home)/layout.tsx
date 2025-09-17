@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Navbar } from "@/components/navbar/navbar"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import "../globals.css"
+import { Sidebar, SidebarProvider } from "../../components/ui/sidebar"
+import { AppSidebar } from "./_components/AppSidebar"
 import LeftPanel from "./_components/LeftPannel"
 import TaskTreePanel from "./_components/TaskTreePanel"
 
@@ -21,15 +23,14 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-          <Navbar />
-          <main className="flex justify-center bg-gray-300">
-            <LeftPanel>
-              <TaskTreePanel />
-            </LeftPanel>
-            <section className="p-8 flex-1 flex justify-center">{children}</section>
-          </main>
-        </ThemeProvider>
+        <SidebarProvider>
+          <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+            <AppSidebar />
+            <main className="bg-gray-300  w-full">
+              <section className="flex-1 flex justify-center">{children}</section>
+            </main>
+          </ThemeProvider>
+        </SidebarProvider>
       </body>
     </html>
   )
