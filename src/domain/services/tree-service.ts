@@ -1,11 +1,10 @@
-import type { Node } from "../entities/node"
-import type { NodeId } from "../entities/node-id"
+import type { NodeEntity } from "../entities/node"
 import type { Relationship } from "../entities/relationship"
 import type { NodeRepository } from "../repositories/node-repository"
 import type { RelationshipRepository } from "../repositories/relationship-repository"
 
 export interface Tree {
-  node: Node
+  node: NodeEntity
   children: Tree[]
   parent?: Tree
 }
@@ -16,12 +15,12 @@ export class TreeService {
     private readonly relationshipRepository: RelationshipRepository,
   ) {}
 
-  async buildTree(nodes: Node[], relationships: Relationship[]): Promise<Tree[]> {
+  async buildTree(nodes: NodeEntity[], relationships: Relationship[]): Promise<Tree[]> {
     const rootNodes = this.findRootNodes(nodes, relationships)
     return Promise.all(rootNodes.map(node => this.buildTreeFromNode(node, nodes, relationships)))
   }
 
-  async getNodeWithChildren(nodeId: NodeId): Promise<Tree | null> {
+  async getNodeWithChildren(nodeId: string): Promise<Tree | null> {
     const node = await this.nodeRepository.findById(nodeId)
     if (!node) {
       return null
@@ -33,9 +32,9 @@ export class TreeService {
     return this.buildTreeFromNode(node, allNodes, allRelationships)
   }
 
-  async getNodePath(nodeId: NodeId): Promise<Node[]> {
-    const path: Node[] = []
-    let currentNodeId: NodeId | null = nodeId
+  async getNodePath(nodeId: string): Promise<NodeEntity[]> {
+    const path: NodeEntity[] = []
+    let currentNodeId: string | null = nodeId
 
     while (currentNodeId) {
       const node = await this.nodeRepository.findById(currentNodeId)
@@ -52,7 +51,7 @@ export class TreeService {
     return path
   }
 
-  async getNodeDepth(nodeId: NodeId): Promise<number> {
+  async getNodeDepth(nodeId: string): Promise<number> {
     const path = await this.getNodePath(nodeId)
     return path.length - 1
   }
@@ -70,7 +69,7 @@ export class TreeService {
 
     let maxDepth = 0
     for (const node of allNodes) {
-      const depth = await this.getNodeDepth(node.getId())
+      const depth = await this.getNodeDepth(node.id)
       maxDepth = Math.max(maxDepth, depth)
     }
 
@@ -82,12 +81,17 @@ export class TreeService {
     }
   }
 
-  private async buildTreeFromNode(node: Node, allNodes: Node[], allRelationships: Relationship[]): Promise<Tree> {
-    const childRelationships = allRelationships.filter(rel => rel.getParentId().equals(node.getId()))
+  private async buildTreeFromNode(
+    node: NodeEntity,
+    allNodes: NodeEntity[],
+    allRelationships: Relationship[],
+  ): Promise<Tree> {
+    const childRelationships = allRelationships.filter(rel => rel.getParentId() === node.id)
 
     const children = await Promise.all(
       childRelationships.map(async rel => {
-        const childNode = allNodes.find(n => n.getId().equals(rel.getChildId()))
+        const childNode = allNodes.find(n => n.id === rel.getChildId())
+
         if (!childNode) {
           throw new Error(`Child node with id ${rel.getChildId().toString()} not found`)
         }
@@ -101,9 +105,9 @@ export class TreeService {
     }
   }
 
-  private findRootNodes(nodes: Node[], relationships: Relationship[]): Node[] {
+  private findRootNodes(nodes: NodeEntity[], relationships: Relationship[]): NodeEntity[] {
     const childNodeIds = new Set(relationships.map(rel => rel.getChildId().toString()))
 
-    return nodes.filter(node => !childNodeIds.has(node.getId().toString()))
+    return nodes.filter(node => !childNodeIds.has(node.id.toString()))
   }
 }

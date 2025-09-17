@@ -1,8 +1,5 @@
 import type { CsvRow } from "../../domain/entities/csv-data"
-import type { Node } from "../../domain/entities/node"
-import { Node as NodeEntity } from "../../domain/entities/node"
-import type { NodeId } from "../../domain/entities/node-id"
-import { NodeId as NodeIdEntity } from "../../domain/entities/node-id"
+import type { NodeEntity } from "../../domain/entities/node"
 import type { NodeStatus } from "../../domain/entities/node-status"
 import { NodeStatus as NodeStatusEnum } from "../../domain/entities/node-status"
 import type { NodeType } from "../../domain/entities/node-type"
@@ -16,33 +13,33 @@ export class NodeRepositoryImpl implements NodeRepository {
     private readonly fileName = "/src/data/nodes.csv",
   ) {}
 
-  async findById(id: NodeId): Promise<Node | null> {
+  async findById(id: string): Promise<NodeEntity | null> {
     const nodes = await this.findAll()
-    return nodes.find(node => node.getId().equals(id)) || null
+    return nodes.find(node => node.id === id) || null
   }
 
-  async findAll(): Promise<Node[]> {
+  async findAll(): Promise<NodeEntity[]> {
     const csvData = await this.csvRepository.readCsvFile(this.fileName)
     return csvData.map(row => this.mapCsvRowToNode(row))
   }
 
-  async findByType(type: NodeType): Promise<Node[]> {
+  async findByType(type: NodeType): Promise<NodeEntity[]> {
     const allNodes = await this.findAll()
-    return allNodes.filter(node => node.getType() === type)
+    return allNodes.filter(node => node.type === type)
   }
 
-  async findByStatus(status: NodeStatus): Promise<Node[]> {
+  async findByStatus(status: NodeStatus): Promise<NodeEntity[]> {
     const allNodes = await this.findAll()
-    return allNodes.filter(node => node.getStatus() === status)
+    return allNodes.filter(node => node.status === status)
   }
 
-  async exists(id: NodeId): Promise<boolean> {
+  async exists(id: string): Promise<boolean> {
     const node = await this.findById(id)
     return node !== null
   }
 
-  private mapCsvRowToNode(row: CsvRow): Node {
-    const id = new NodeIdEntity(row.node_id)
+  private mapCsvRowToNode(row: CsvRow): NodeEntity {
+    const id = row.node_id || ""
     const name = row.name || ""
     const type = NodeTypeEnum.fromString(row.type) || NodeTypeEnum.TASK
     const status = NodeStatusEnum.fromString(row.status) || NodeStatusEnum.BACKLOG
@@ -50,6 +47,14 @@ export class NodeRepositoryImpl implements NodeRepository {
     const startDate = row.start_date ? new Date(row.start_date) : undefined
     const endDate = row.end_date ? new Date(row.end_date) : undefined
 
-    return new NodeEntity(id, name, type, status, description, startDate, endDate)
+    return {
+      id,
+      name,
+      type,
+      status,
+      description,
+      startDate,
+      endDate,
+    }
   }
 }

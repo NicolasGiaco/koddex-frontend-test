@@ -1,5 +1,3 @@
-import type { NodeId } from "./node-id"
-
 export enum RelationshipType {
   PARENT_CHILD = "parent_child",
   DEPENDENCY = "dependency",
@@ -8,16 +6,16 @@ export enum RelationshipType {
 
 export class Relationship {
   constructor(
-    private readonly parentId: NodeId,
-    private readonly childId: NodeId,
+    private readonly parentId: string,
+    private readonly childId: string,
     private readonly type: RelationshipType = RelationshipType.PARENT_CHILD,
   ) {}
 
-  getParentId(): NodeId {
+  getParentId(): string {
     return this.parentId
   }
 
-  getChildId(): NodeId {
+  getChildId(): string {
     return this.childId
   }
 
@@ -26,10 +24,10 @@ export class Relationship {
   }
 
   equals(other: Relationship): boolean {
-    return this.parentId.equals(other.parentId) && this.childId.equals(other.childId) && this.type === other.type
+    return this.parentId === other.parentId && this.childId === other.childId && this.type === other.type
   }
 
   toString(): string {
-    return `Relationship(${this.parentId.toString()} -> ${this.childId.toString()}, ${this.type})`
+    return `Relationship(${this.parentId} -> ${this.childId}, ${this.type})`
   }
 }

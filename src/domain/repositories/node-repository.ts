@@ -1,12 +1,11 @@
-import type { Node } from "../entities/node"
-import type { NodeId } from "../entities/node-id"
+import type { NodeEntity } from "../entities/node"
 import type { NodeStatus } from "../entities/node-status"
 import type { NodeType } from "../entities/node-type"
 
 export interface NodeRepository {
-  findById(id: NodeId): Promise<Node | null>
-  findAll(): Promise<Node[]>
-  findByType(type: NodeType): Promise<Node[]>
-  findByStatus(status: NodeStatus): Promise<Node[]>
-  exists(id: NodeId): Promise<boolean>
+  findById(id: string): Promise<NodeEntity | null>
+  findAll(): Promise<NodeEntity[]>
+  findByType(type: NodeType): Promise<NodeEntity[]>
+  findByStatus(status: NodeStatus): Promise<NodeEntity[]>
+  exists(id: string): Promise<boolean>
 }
