@@ -12,7 +12,7 @@
   },
   "formatter": {
     "enabled": true,
-    "formatWithErrors": false,
+    "formatWithErrors": true,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineEnding": "lf",
@@ -32,6 +32,9 @@
       "jsxQuoteStyle": "double",
       "arrowParentheses": "asNeeded",
       "indentWidth": 2
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
     }
   },
   "json": {
@@ -42,6 +45,9 @@
   "linter": {
     "enabled": true,
     "rules": {
+      "style": {
+        "useImportType": "off"
+      },
       "recommended": true
     },
     "domains": {
